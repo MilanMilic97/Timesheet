@@ -1,0 +1,9 @@
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Core\bin\Debug\netcoreapp3.1\Timesheet.Core.deps.json
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Core\bin\Debug\netcoreapp3.1\Timesheet.Core.dll
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Core\bin\Debug\netcoreapp3.1\Timesheet.Core.pdb
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Core\obj\Debug\netcoreapp3.1\Timesheet.Core.csprojAssemblyReference.cache
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Core\obj\Debug\netcoreapp3.1\Timesheet.Core.AssemblyInfoInputs.cache
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Core\obj\Debug\netcoreapp3.1\Timesheet.Core.AssemblyInfo.cs
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Core\obj\Debug\netcoreapp3.1\Timesheet.Core.csproj.CoreCompileInputs.cache
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Core\obj\Debug\netcoreapp3.1\Timesheet.Core.dll
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Core\obj\Debug\netcoreapp3.1\Timesheet.Core.pdb

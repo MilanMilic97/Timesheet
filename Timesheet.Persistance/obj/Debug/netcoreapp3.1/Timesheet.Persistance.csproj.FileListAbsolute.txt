@@ -1,0 +1,12 @@
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Persistance\bin\Debug\netcoreapp3.1\Timesheet.Core.dll
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Persistance\obj\Debug\netcoreapp3.1\Timesheet.Persistance.csprojAssemblyReference.cache
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Persistance\obj\Debug\netcoreapp3.1\Timesheet.Persistance.AssemblyInfoInputs.cache
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Persistance\obj\Debug\netcoreapp3.1\Timesheet.Persistance.AssemblyInfo.cs
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Persistance\bin\Debug\netcoreapp3.1\Timesheet.Persistance.deps.json
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Persistance\bin\Debug\netcoreapp3.1\Timesheet.Persistance.dll
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Persistance\bin\Debug\netcoreapp3.1\Timesheet.Persistance.pdb
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Persistance\bin\Debug\netcoreapp3.1\Timesheet.Core.pdb
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Persistance\obj\Debug\netcoreapp3.1\Timesheet.Persistance.csproj.CoreCompileInputs.cache
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Persistance\obj\Debug\netcoreapp3.1\Timesheet.Persistance.csproj.CopyComplete
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Persistance\obj\Debug\netcoreapp3.1\Timesheet.Persistance.dll
+D:\.NETworkspace\Praksa\Timesheet.Core\Timesheet.Persistance\obj\Debug\netcoreapp3.1\Timesheet.Persistance.pdb
