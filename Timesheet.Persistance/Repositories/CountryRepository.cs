@@ -33,5 +33,22 @@ namespace Timesheet.Persistance.Repositories
             return Country.Create(reader.GetInt32(reader.GetOrdinal("Id")), reader.GetString(1)).Value;
 
         }
+        public IEnumerable<Country> GetAll()
+        {
+            string query = "SELECT Id, Name FROM Countries";
+            using SqlCommand command = new SqlCommand(query, _connection);
+
+            List<Country> countries = new List<Country>();
+
+            using SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var country = Country.Create(reader.GetInt32(reader.GetOrdinal("Id")), reader.GetString(1)).Value;
+                countries.Add(country);
+            }
+
+            return countries;
+
+        }
     }
 }

@@ -11,11 +11,13 @@ namespace Timesheet.Persistance.Repositories
 {
     public class ProjectRepository : IProjectRepository
     {
+        private readonly SqlTransaction _transaction;
         private readonly SqlConnection _connection;
 
-        public ProjectRepository(SqlConnection connection)
+        public ProjectRepository(SqlConnection connection, SqlTransaction transaction)
         {
             _connection = connection;
+            _transaction = transaction;
         }
 
         public IEnumerable<Project> GetAll()
@@ -33,7 +35,7 @@ namespace Timesheet.Persistance.Repositories
                "JOIN Clients ON Projects.Client_Id = Clients.Id " +
                "JOIN Countries ON Clients.Country_Id = Countries.Id " +
                "WHERE Projects.Id = @Id";
-            using SqlCommand command = new SqlCommand(query, _connection);
+            using SqlCommand command = new SqlCommand(query, _connection, _transaction);
 
             command.Parameters.AddWithValue("@Id", id);
             using (SqlDataReader reader = command.ExecuteReader())
@@ -61,7 +63,7 @@ namespace Timesheet.Persistance.Repositories
         public void Insert(Project project)
         {
             string query = "INSERT INTO Projects (Name, Description, Status, Client_Id, User_Id) VALUES (@Name, @Description, @Status, @UserId, @ClientId)";
-            using SqlCommand command = new SqlCommand(query, _connection);
+            using SqlCommand command = new SqlCommand(query, _connection, _transaction);
             command.Parameters.AddWithValue("@Name", project.Name.ToString());
             command.Parameters.AddWithValue("@Description", project.Description.ToString());
             command.Parameters.AddWithValue("@Status", project.Status);

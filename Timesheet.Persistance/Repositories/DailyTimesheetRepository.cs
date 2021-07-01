@@ -15,9 +15,10 @@ namespace Timesheet.Persistance.Repositories
         private readonly SqlConnection _connection;
         private SqlTransaction _transaction;
 
-        public DailyTimesheetRepository(SqlConnection connection)
+        public DailyTimesheetRepository(SqlConnection connection, SqlTransaction transaction)
         {
             _connection = connection;
+            _transaction = transaction;
         }
 
         public IEnumerable<DailyTimesheet> GetAll()
@@ -41,7 +42,7 @@ namespace Timesheet.Persistance.Repositories
                 "JOIN Users on Projects.User_Id = Users.Id " +
                 "WHERE Timesheets.DailyTimeSheet_Id = @Id";
 
-            using SqlCommand command = new SqlCommand(query, _connection);
+            using SqlCommand command = new SqlCommand(query, _connection, _transaction);
             command.Parameters.AddWithValue("@Id", id);
             using SqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
@@ -58,7 +59,7 @@ namespace Timesheet.Persistance.Repositories
 
             query = "SELECT DailyTimesheets.Time, DailyTimesheets.User_Id, Users.Username, Users.Password, Users.Email, Users.Name, Users.HoursPerWeek, Users.Status, Users.Role " +
                 "FROM DailyTimesheets JOIN Users on DailyTimesheets.User_Id = Users.Id WHERE DailyTimesheets.Id = @Id";
-            using SqlCommand command2 = new SqlCommand(query, _connection);
+            using SqlCommand command2 = new SqlCommand(query, _connection,_transaction);
             command2.Parameters.AddWithValue("@Id", id);
             using SqlDataReader reader2 = command2.ExecuteReader();
             if (!reader2.Read())
@@ -79,15 +80,15 @@ namespace Timesheet.Persistance.Repositories
         public void Insert(DailyTimesheet dailyTimesheet)
         {
             string query = "INSERT INTO DailyTimesheets (Time, User_Id) VALUES (@Time, @UserId)";
-            //transaction = _connection.BeginTransaction();
-            using SqlCommand command = new SqlCommand(query, _connection /*, transaction*/);
+            
+            using SqlCommand command = new SqlCommand(query, _connection , _transaction);
             command.Parameters.AddWithValue("@Time", dailyTimesheet.Time);
             command.Parameters.AddWithValue("@UserId", dailyTimesheet.TeamMember.Id);
 
             command.ExecuteNonQuery();
 
             query = "INSERT INTO Timesheets (Description, Overtime, Time, DailyTimeSheet_Id, Category_Id, Project_Id, User_Id) VALUES (@Description, @Overtime, @Time, (SELECT Id FROM DailyTimesheets WHERE Time = @Date), @Category_Id, @Project_Id, @User_Id)";
-            using SqlCommand command2 = new SqlCommand(query, _connection /*, transaction*/);
+            using SqlCommand command2 = new SqlCommand(query, _connection , _transaction);
 
             command2.Parameters.Add("@Description", SqlDbType.NVarChar);
             command2.Parameters.Add("@Overtime", SqlDbType.Float);
@@ -109,25 +110,18 @@ namespace Timesheet.Persistance.Repositories
                 command2.ExecuteNonQuery();
             }
 
-            //try
-            //{
-            //    transaction.Commit();
-            //}
-            //catch (SqlException)
-            //{
-            //    transaction.Rollback();
-            //}
+         
         }
 
         public void Remove(int id)
         {
             string query = "DELETE FROM Timesheets WHERE DailyTimeSheet_Id = @Id";
-            using SqlCommand command = new SqlCommand(query, _connection);
+            using SqlCommand command = new SqlCommand(query, _connection,_transaction);
             command.Parameters.AddWithValue("@Id", id);
             command.ExecuteNonQuery();
 
             query = "DELETE FROM DailyTimesheets WHERE Id = @Id";
-            using SqlCommand command2 = new SqlCommand(query, _connection);
+            using SqlCommand command2 = new SqlCommand(query, _connection, _transaction);
             command2.Parameters.AddWithValue("@Id", id);
             command2.ExecuteNonQuery();
 

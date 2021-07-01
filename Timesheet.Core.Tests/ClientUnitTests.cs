@@ -16,7 +16,7 @@ namespace Timesheet.Core.Tests
         
         [Theory]
         [ClassData(typeof(ClientData))]
-        public void DeleteFailIfClientDoesntExists (Client client, Mock<IClientRepository> repository, Mock<IUnitOfWork> unitOfWork)
+        public void Delete_Fail_IfClientDoesntExists (Client client, Mock<IClientRepository> repository, Mock<IUnitOfWork> unitOfWork)
         {
             ClientService clientService = new ClientService(repository.Object, unitOfWork.Object);
 

@@ -11,17 +11,20 @@ namespace Timesheet.Persistance.Repositories
 {
     public class TeamMemberRepository : ITeamMemberRepository
     {
-        private SqlConnection _connection;
+        private readonly SqlConnection _connection;
+        private readonly SqlTransaction _transaction;
 
-        public TeamMemberRepository(SqlConnection connection)
+
+        public TeamMemberRepository(SqlConnection connection, SqlTransaction transaction)
         {
             _connection = connection;
+            _transaction = transaction;
         }
 
         public Maybe<TeamMember> FindByUsername(string username)
         {
             string query = "SELECT Users.Id, Users.Username, Users.Password, Users.Email, Users.Name, Users.HoursPerWeek, Users.Status, Users.Role FROM Users WHERE Users.Username = @Username";
-            using SqlCommand command = new SqlCommand(query, _connection);
+            using SqlCommand command = new SqlCommand(query, _connection, _transaction);
             command.Parameters.AddWithValue("@Username", username);
             command.ExecuteNonQuery();
             using (SqlDataReader reader = command.ExecuteReader())
@@ -48,7 +51,7 @@ namespace Timesheet.Persistance.Repositories
             string query = "SELECT Users.Id, Users.Email, Users.Username, Users.Password, Users.Name, " +
                 "Users.HoursPerWeek, Users.Status, Users.Role " +
                 "from dbo.Users where dbo.Users.id = @id";
-            using SqlCommand command = new SqlCommand(query, _connection);
+            using SqlCommand command = new SqlCommand(query, _connection, _transaction);
             command.Parameters.AddWithValue("@id", id);
             using (SqlDataReader reader = command.ExecuteReader())
             {
@@ -77,11 +80,6 @@ namespace Timesheet.Persistance.Repositories
             command.Parameters.AddWithValue("@Status", teamMember.Status);
             command.Parameters.AddWithValue("@Role", teamMember.Role);
             command.ExecuteNonQuery();
-        }
-
-        public void Login()
-        {
-
         }
 
         public void Remove(int id)

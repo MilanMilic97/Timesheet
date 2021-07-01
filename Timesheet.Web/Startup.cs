@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+using System.Data;
+
 namespace Timesheet.Web
 {
     public class Startup
@@ -35,7 +37,7 @@ namespace Timesheet.Web
         {
             var key = "this is my custom Secret key for authnetication";
 
-            services.AddScoped<ClientService>();
+            
             services.AddSingleton<IAuthentication>(new Token(key));
 
             services.AddAuthentication(x =>
@@ -63,6 +65,13 @@ namespace Timesheet.Web
                 connection.Open();
                 return connection;
             });
+
+            services.AddScoped((provider) =>
+            {
+                var connection = provider.GetService<SqlConnection>();
+                return connection.BeginTransaction(IsolationLevel.ReadUncommitted);
+            });
+
             services.AddControllers();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
@@ -70,12 +79,17 @@ namespace Timesheet.Web
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<ITeamMemberRepository, TeamMemberRepository>();
             services.AddScoped<IDailyTimesheetRepository, DailyTimesheetRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddScoped<ClientService>();
 
-            
-           
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
 
-           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,7 +105,7 @@ namespace Timesheet.Web
             app.UseRouting();
             
             app.UseAuthorization();
-
+            app.UseCors();
             app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>

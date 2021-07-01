@@ -9,5 +9,6 @@ namespace Timesheet.Core.Interfaces
    public interface ICountryRepository
     {
         Maybe<Country> GetById(int id);
+        IEnumerable<Country> GetAll();
     }
 }

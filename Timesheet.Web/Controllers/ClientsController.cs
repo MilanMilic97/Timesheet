@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,6 +17,7 @@ namespace Timesheet.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("MyPolicy")]
     public class ClientsController : ControllerBase
     {
         private readonly IClientRepository _clientRepository;
@@ -90,8 +92,9 @@ namespace Timesheet.Web.Controllers
             {
                 return BadRequest();
             }
-            
+
             return Ok();
         }
+
     }
 }

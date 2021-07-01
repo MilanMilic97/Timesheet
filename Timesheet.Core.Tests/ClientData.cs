@@ -27,7 +27,7 @@ namespace Timesheet.Core.Tests
 
 
             yield return new object[] {
-                Client.Create(1 , "Client 5", "Perina Ulica", "Zrenjanin", 23215, country).Value, mockedClientRepo, mocekdUnitOfWork
+                Client.Create(5 , "Client 5", "Perina Ulica", "Zrenjanin", 23215, country).Value, mockedClientRepo, mocekdUnitOfWork
             };
         }
 

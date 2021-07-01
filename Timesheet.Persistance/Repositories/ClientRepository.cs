@@ -14,18 +14,21 @@ namespace Timesheet.Persistance.Repositories
    public class ClientRepository : IClientRepository
     {
         private readonly SqlConnection _connection;
+        private readonly SqlTransaction _transaction;
        
 
-        public ClientRepository(SqlConnection conn)
+        public ClientRepository(SqlConnection conn,SqlTransaction transaction)
         {
             _connection = conn;
-           
+            _transaction = transaction;
+
+
         }
 
         public void Insert(Client client)
         {
             string query = "INSERT INTO [dbo].[Clients]([Name],[City],[Street],[ZipCode],[Country_Id])VALUES(@name, @city, @street, @zipCode, @countryId)";
-            using SqlCommand command = new SqlCommand(query, _connection);
+            using SqlCommand command = new SqlCommand(query, _connection, _transaction);
             command.Parameters.AddWithValue("@name", client.Name.ToString());
             command.Parameters.AddWithValue("@city", client.Address.City.ToString());
             command.Parameters.AddWithValue("@street", client.Address.Street.ToString());
@@ -38,7 +41,7 @@ namespace Timesheet.Persistance.Repositories
         public void Remove(int id)
         {
             string query = "DELETE FROM [dbo].[Clients] WHERE Id = @Id";
-            using SqlCommand command = new SqlCommand(query, _connection);
+            using SqlCommand command = new SqlCommand(query, _connection, _transaction);
             command.Parameters.AddWithValue("@Id", id);
             command.ExecuteNonQuery();
         }
@@ -49,7 +52,7 @@ namespace Timesheet.Persistance.Repositories
                            "FROM Clients JOIN Countries ON Clients.Country_Id = Countries.Id ";
                            
             List<Client> clients = new List<Client>();
-            using SqlCommand command = new SqlCommand(query, _connection);
+            using SqlCommand command = new SqlCommand(query, _connection, _transaction);
 
             using SqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
@@ -68,7 +71,7 @@ namespace Timesheet.Persistance.Repositories
                            "FROM dbo.Clients c JOIN dbo.Countries ON dbo.Clients.Country_Id = dbo.Countries.Id " +
                            "WHERE dbo.Clients.Id = @Id";
 
-            using SqlCommand command = new SqlCommand(query, _connection);
+            using SqlCommand command = new SqlCommand(query, _connection, _transaction);
             command.Parameters.AddWithValue("@Id", id);
 
             using SqlDataReader reader = command.ExecuteReader();
@@ -84,7 +87,7 @@ namespace Timesheet.Persistance.Repositories
         public void Update(Client client)
         {
             string query = "UPDATE Clients SET Name = @Name, City = @City, Street = @Street, ZipCode = @ZipCode, Country_Id = @CountryId WHERE Id = @Id";
-            using SqlCommand command = new SqlCommand(query, _connection);
+            using SqlCommand command = new SqlCommand(query, _connection, _transaction);
             command.Parameters.AddWithValue("@Name", client.Name.ToString());
             command.Parameters.AddWithValue("@City", client.Address.City.ToString());
             command.Parameters.AddWithValue("@Street", client.Address.Street.ToString());
