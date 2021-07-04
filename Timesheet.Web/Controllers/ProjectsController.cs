@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ namespace Timesheet.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("MyPolicy")]
     public class ProjectsController : ControllerBase
     {
         private readonly IProjectRepository _projectRepository;
@@ -29,6 +31,7 @@ namespace Timesheet.Web.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        [HttpPost]
         public IActionResult CreateProject(ProjectDto projectDto)
         {
             Maybe<Client> client = _clientRepository.GetById(projectDto.ClientId);

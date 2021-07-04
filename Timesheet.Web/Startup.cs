@@ -100,12 +100,13 @@ namespace Timesheet.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
 
+           
             app.UseRouting();
-            
+            app.UseCors("MyPolicy");
+            //app.UseHttpsRedirection();
             app.UseAuthorization();
-            app.UseCors();
+            
             app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>

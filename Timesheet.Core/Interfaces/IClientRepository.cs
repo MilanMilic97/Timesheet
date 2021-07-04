@@ -15,6 +15,8 @@ namespace Timesheet.Core.Interfaces
         void Insert(Client client);
         void Update(Client client);
         void Remove(int id);
-       
+        int GetNumberOfClients();
+
+
     }
 }

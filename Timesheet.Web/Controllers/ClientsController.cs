@@ -17,7 +17,7 @@ namespace Timesheet.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("MyPolicy")]
+    //[EnableCors("MyPolicy")]
     public class ClientsController : ControllerBase
     {
         private readonly IClientRepository _clientRepository;
@@ -47,7 +47,7 @@ namespace Timesheet.Web.Controllers
             {
                 return BadRequest();
             }
-            return Ok();
+            return Ok(result.Value);
         }
 
         [HttpDelete("{id}")]
@@ -69,13 +69,15 @@ namespace Timesheet.Web.Controllers
                 return BadRequest();
             }
 
-            return Ok(clientDtoFactory.Create(result.Value));
+            return Ok(clientDtoFactory.Create(result.Value,0));
         }
 
         [HttpGet]
         public IActionResult GetAllClients([FromQuery] PageParameters pageParameters)
-        {           
-            return Ok(_clientRepository.GetAll(pageParameters).Select(x => clientDtoFactory.Create(x)));
+        {
+            PagedList<Client> dsa = _clientRepository.GetAll(pageParameters);
+            int a = dsa.TotalPages;
+            return Ok(dsa.Select(x => clientDtoFactory.Create(x,a)));
         }
 
         [HttpPut("{id}")]
@@ -96,5 +98,12 @@ namespace Timesheet.Web.Controllers
             return Ok();
         }
 
+
+        [HttpGet]
+        [Route("getNumber")]
+        public IActionResult GetNumberOfClients()
+        {
+            return Ok(_clientRepository.GetNumberOfClients());
+        }
     }
 }

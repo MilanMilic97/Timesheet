@@ -13,8 +13,11 @@ namespace Timesheet.Web.DTO
         public string Street { get; set; }
         public int ZipCode { get; set; }
         public int CountryId { get; set; }
+        public int TotalPages { get; set; }
+        public int PageSize { get; set; }
 
-        public ClientDto(int id, string name, string city, string street, int zipCode, int countryId)
+
+        public ClientDto(int id, string name, string city, string street, int zipCode, int countryId, int totalPages)
         {
             Id = id;
             Name = name;
@@ -22,6 +25,7 @@ namespace Timesheet.Web.DTO
             Street = street;
             ZipCode = zipCode;
             CountryId = countryId;
+            TotalPages = totalPages;
         }
 
         public ClientDto()

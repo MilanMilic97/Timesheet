@@ -9,9 +9,9 @@ namespace Timesheet.Web.DtoFactories
 {
     public class ClientDtoFactory
     {
-        public ClientDto Create(Client client)
+        public ClientDto Create(Client client, int pageNumber)
         {
-            return new ClientDto(client.Id, client.Name, client.Address.City, client.Address.Street, client.Address.ZipCode, client.Address.Country.Id);
+            return new ClientDto(client.Id, client.Name, client.Address.City, client.Address.Street, client.Address.ZipCode, client.Address.Country.Id, pageNumber);
         }
     }
 }

@@ -49,11 +49,16 @@ namespace Timesheet.Persistance.Repositories
         public PagedList<Client> GetAll(PageParameters pageParameters)
         {
             string query = "SELECT Clients.Id, Clients.Name, Clients.City, Clients.Street, Clients.ZipCode, Clients.Country_Id, Countries.Name " +
-                           "FROM Clients JOIN Countries ON Clients.Country_Id = Countries.Id ";
+                           "FROM Clients JOIN Countries ON Clients.Country_Id = Countries.Id " +
+                           "WHERE Clients.Name like @Letter";
                            
             List<Client> clients = new List<Client>();
             using SqlCommand command = new SqlCommand(query, _connection, _transaction);
-
+            if (string.IsNullOrWhiteSpace(pageParameters.Letter))
+                command.Parameters.AddWithValue("@Letter", "%%");
+            else
+                command.Parameters.AddWithValue("@Letter", pageParameters.Letter + "%");           
+           
             using SqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -67,9 +72,9 @@ namespace Timesheet.Persistance.Repositories
         public Maybe<Client> GetById(int id)
         {
             //pitati za ovaj query i query od getAll metode, koji je bolji?
-            string query = "SELECT dbo.Clients.Id, dbo.Clients.Name, dbo.Clients.City, dbo.Clients.Street, dbo.Clients.ZipCode, dbo.Clients.Country_Id, dbo.Countries.Name " +
-                           "FROM dbo.Clients c JOIN dbo.Countries ON dbo.Clients.Country_Id = dbo.Countries.Id " +
-                           "WHERE dbo.Clients.Id = @Id";
+            string query = "SELECT Clients.Id, Clients.Name, Clients.City, dbo.Clients.Street, Clients.ZipCode, Clients.Country_Id, Countries.Name " +
+                           "FROM Clients JOIN Countries ON Clients.Country_Id = Countries.Id " +
+                           "WHERE Clients.Id = @Id";
 
             using SqlCommand command = new SqlCommand(query, _connection, _transaction);
             command.Parameters.AddWithValue("@Id", id);
@@ -97,6 +102,20 @@ namespace Timesheet.Persistance.Repositories
             command.ExecuteNonQuery();
 
 
+        }
+
+        public int GetNumberOfClients()
+        {
+            string query = "SELECT COUNT(*) FROM Clients";
+            using SqlCommand command = new SqlCommand(query, _connection, _transaction);
+
+            using SqlDataReader reader = command.ExecuteReader();
+            if (!reader.Read())
+            {
+                
+            }
+
+            return reader.GetInt32(0);
         }
     }
 }

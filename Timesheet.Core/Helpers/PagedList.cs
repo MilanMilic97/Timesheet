@@ -25,6 +25,10 @@ namespace Timesheet.Core.Helpers
             AddRange(items);
         }
 
+        public PagedList()
+        {
+        }
+
         public static PagedList<T> ToPagedList(IEnumerable<T> source, int pageNumber, int pageSize)
         {
             var count = source.Count();

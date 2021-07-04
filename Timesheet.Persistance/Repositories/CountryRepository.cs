@@ -11,16 +11,19 @@ namespace Timesheet.Persistance.Repositories
     public class CountryRepository : ICountryRepository
     {
         private readonly SqlConnection _connection;
+        private readonly SqlTransaction _transaction;
 
-        public CountryRepository(SqlConnection connection)
+
+        public CountryRepository(SqlConnection connection, SqlTransaction transaction)
         {
             _connection = connection;
+            _transaction = transaction;
         }
 
         public Maybe<Country> GetById(int id)
         {
             string query = "SELECT Id, Name FROM[dbo].[Countries] WHERE Id = @Id";
-            using SqlCommand command = new SqlCommand(query, _connection);
+            using SqlCommand command = new SqlCommand(query, _connection, _transaction);
             command.Parameters.AddWithValue("@Id", id);
 
             using SqlDataReader reader = command.ExecuteReader();
@@ -36,7 +39,7 @@ namespace Timesheet.Persistance.Repositories
         public IEnumerable<Country> GetAll()
         {
             string query = "SELECT Id, Name FROM Countries";
-            using SqlCommand command = new SqlCommand(query, _connection);
+            using SqlCommand command = new SqlCommand(query, _connection, _transaction);
 
             List<Country> countries = new List<Country>();
 
